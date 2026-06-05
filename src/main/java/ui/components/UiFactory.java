@@ -20,7 +20,15 @@ public final class UiFactory {
         JPanel panel = new RoundedCardPanel();
         panel.setLayout(new BorderLayout(0, 12));
         panel.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
-        panel.add(cardHeader(title, description), BorderLayout.NORTH);
+        if (title != null && !title.isBlank()) {
+            panel.add(cardHeader(title, description), BorderLayout.NORTH);
+        }
+        return panel;
+    }
+
+    public static JPanel transparentPanel() {
+        JPanel panel = new JPanel();
+        panel.setOpaque(false);
         return panel;
     }
 
@@ -33,10 +41,24 @@ public final class UiFactory {
     public static JButton primaryButton(String text) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(140, 42));
+        button.setMaximumSize(new Dimension(140, 42));
         button.setBackground(AppTheme.PRIMARY_COLOR);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(10, 14, 10, 14));
+        return button;
+    }
+
+    public static JButton outlineButton(String text) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(140, 42));
+        button.setMaximumSize(new Dimension(140, 42));
+        button.setBackground(Color.WHITE);
+        button.setForeground(AppTheme.PRIMARY_COLOR);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(AppTheme.PRIMARY_COLOR),
+                BorderFactory.createEmptyBorder(9, 13, 9, 13)));
         return button;
     }
 
@@ -53,6 +75,7 @@ public final class UiFactory {
 
     private static JPanel cardHeader(String title, String description) {
         JPanel header = transparentPanel(new BorderLayout());
+
         JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 15f));
         titleLabel.setForeground(AppTheme.TEXT_DARK);
@@ -66,6 +89,7 @@ public final class UiFactory {
             descriptionLabel.setHorizontalAlignment(JLabel.CENTER);
             header.add(descriptionLabel, BorderLayout.CENTER);
         }
+
         return header;
     }
 }

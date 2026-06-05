@@ -1,8 +1,9 @@
 package des;
 
 public enum InputFormat {
-    BASE64("Base64"),
-    HEX("Hex");
+    TEXT("Văn bản"),
+    HEX("Hex"),
+    BASE64("Base64");
 
     private final String label;
 

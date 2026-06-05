@@ -10,26 +10,29 @@ public final class EncodingUtils {
     private EncodingUtils() {
     }
 
+    // Chuyển văn bản sang byte UTF-8.
     public static byte[] utf8Bytes(String text) {
         if (text == null) {
-            throw new IllegalArgumentException("Text must not be null.");
+            throw new IllegalArgumentException("Văn bản không được để trống.");
         }
         return text.getBytes(StandardCharsets.UTF_8);
     }
 
+    // Chuyển byte UTF-8 sang văn bản.
     public static String utf8String(byte[] bytes) {
         if (bytes == null) {
-            throw new IllegalArgumentException("Bytes must not be null.");
+            throw new IllegalArgumentException("Mảng byte không được để trống.");
         }
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
+    // Mã hóa Hex/Base64 để hiển thị.
     public static String encode(byte[] bytes, EncodingFormat format) {
         if (bytes == null) {
-            throw new IllegalArgumentException("Bytes must not be null.");
+            throw new IllegalArgumentException("Mảng byte không được để trống.");
         }
         if (format == null) {
-            throw new IllegalArgumentException("Encoding format must not be null.");
+            throw new IllegalArgumentException("Định dạng mã hóa không được để trống.");
         }
 
         return switch (format) {
@@ -38,12 +41,13 @@ public final class EncodingUtils {
         };
     }
 
+    // Giải mã chuỗi Hex/Base64 thành byte để đưa vào thuật toán DES.
     public static byte[] decode(String encodedText, EncodingFormat format) {
         if (encodedText == null || encodedText.isBlank()) {
-            throw new IllegalArgumentException("Encoded text must not be blank.");
+            throw new IllegalArgumentException("Dữ liệu mã hóa không được để trống.");
         }
         if (format == null) {
-            throw new IllegalArgumentException("Encoding format must not be null.");
+            throw new IllegalArgumentException("Định dạng mã hóa không được để trống.");
         }
 
         return switch (format) {
@@ -54,56 +58,57 @@ public final class EncodingUtils {
 
     public static String encodeBase64(byte[] bytes) {
         if (bytes == null) {
-            throw new IllegalArgumentException("Bytes must not be null.");
+            throw new IllegalArgumentException("Mảng byte không được để trống.");
         }
         return Base64.getEncoder().encodeToString(bytes);
     }
 
     public static byte[] decodeBase64(String base64Text) {
         if (base64Text == null || base64Text.isBlank()) {
-            throw new IllegalArgumentException("Base64 text must not be blank.");
+            throw new IllegalArgumentException("Dữ liệu Base64 không được để trống.");
         }
         try {
             return Base64.getDecoder().decode(base64Text);
         } catch (IllegalArgumentException exception) {
-            throw new IllegalArgumentException("Invalid Base64 ciphertext.", exception);
+            throw new IllegalArgumentException("Dữ liệu mã hóa Base64 không hợp lệ.", exception);
         }
     }
 
     public static String encodeHex(byte[] bytes) {
         if (bytes == null) {
-            throw new IllegalArgumentException("Bytes must not be null.");
+            throw new IllegalArgumentException("Mảng byte không được để trống.");
         }
         return UPPERCASE_HEX.formatHex(bytes);
     }
 
     public static byte[] decodeHex(String hexText) {
-        validateHex(hexText, "Hex text");
+        validateHex(hexText, "Dữ liệu Hex");
         try {
             return HexFormat.of().parseHex(hexText);
         } catch (IllegalArgumentException exception) {
-            throw new IllegalArgumentException("Invalid Hex text.", exception);
+            throw new IllegalArgumentException("Dữ liệu Hex không hợp lệ.", exception);
         }
     }
 
+    // Chuyển khóa DES từ 16 ký tự Hex thành đúng 8 byte.
     public static byte[] decodeDesKeyHex(String hexKey) {
-        validateHex(hexKey, "DES key");
+        validateHex(hexKey, "Khóa DES");
         if (hexKey.length() != 16) {
-            throw new IllegalArgumentException("DES key must be exactly 16 hex characters.");
+            throw new IllegalArgumentException("Khóa DES phải có đúng 16 ký tự Hex.");
         }
         return decodeHex(hexKey);
     }
 
     private static void validateHex(String hexText, String label) {
         if (hexText == null || hexText.isBlank()) {
-            throw new IllegalArgumentException(label + " must not be blank.");
+            throw new IllegalArgumentException(label + " không được để trống.");
         }
         if ((hexText.length() % 2) != 0) {
-            throw new IllegalArgumentException(label + " must contain an even number of characters.");
+            throw new IllegalArgumentException(label + " phải có số ký tự chẵn.");
         }
         for (int index = 0; index < hexText.length(); index++) {
             if (Character.digit(hexText.charAt(index), 16) == -1) {
-                throw new IllegalArgumentException(label + " contains non-hex characters.");
+                throw new IllegalArgumentException(label + " chứa ký tự không phải Hex.");
             }
         }
     }

@@ -75,7 +75,7 @@ class FileServiceTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> service.readSupportedFile(file));
 
-        assertEquals("Định dạng file chưa được hỗ trợ.", exception.getMessage());
+        assertEquals("Định dạng tệp chưa được hỗ trợ.", exception.getMessage());
     }
 
     @Test
@@ -86,7 +86,7 @@ class FileServiceTest {
         IOException exception = assertThrows(IOException.class,
                 () -> service.readSupportedFile(file));
 
-        assertEquals("File không tồn tại.", exception.getMessage());
+        assertEquals("Tệp không tồn tại.", exception.getMessage());
     }
 
     @Test
@@ -123,7 +123,7 @@ class FileServiceTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> service.readSupportedFile(file));
 
-        assertEquals("Không tìm thấy nội dung văn bản trong file PDF.", exception.getMessage());
+        assertEquals("Không tìm thấy nội dung văn bản trong tệp PDF.", exception.getMessage());
     }
 
     private void writeDocx(Path file, String text) throws IOException {

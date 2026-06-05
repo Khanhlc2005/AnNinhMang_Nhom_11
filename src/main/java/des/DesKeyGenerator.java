@@ -13,6 +13,7 @@ public class DesKeyGenerator {
         return key;
     }
 
+    // Trả về 16 khóa vòng 48 bit dùng trực tiếp trong các vòng Feistel.
     public long[] generateRoundKeys(byte[] key) {
         KeyScheduleInfo schedule = generateKeySchedule(key);
         long[] roundKeys = new long[16];
@@ -22,6 +23,7 @@ public class DesKeyGenerator {
         return roundKeys;
     }
 
+    // Sinh lịch khóa DES: PC-1 bỏ bit chẵn lẻ, tách C/D, dịch trái và áp dụng PC-2.
     public KeyScheduleInfo generateKeySchedule(byte[] key) {
         BitUtils.requireLength(key, 8, "DES key");
 
